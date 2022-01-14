@@ -1,4 +1,4 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 from odoo import fields, models, tools
@@ -51,18 +51,6 @@ class SaleMarginReport(models.Model):
     state = fields.Selection(
         [("draft", "Draft"), ("posted", "Posted"), ("cancel", "Cancelled")], string="Invoice Status", readonly=True
     )
-    payment_state = fields.Selection(
-        selection=[
-            ("not_paid", "Not Paid"),
-            ("in_payment", "In Payment"),
-            ("paid", "Paid"),
-            ("partial", "Partially Paid"),
-            ("reversed", "Reversed"),
-            ("invoicing_legacy", "Invoicing App Legacy"),
-        ],
-        string="Payment Status",
-        readonly=True,
-    )
 
     def _select(self):
 
@@ -90,7 +78,7 @@ class SaleMarginReport(models.Model):
                 sub.manager_rate * (sale_val    - stock_val )  as commission_manager_computed,
                 commission,
                 partner_id, commercial_partner_id, user_id, manager_user_id,     sub.company_id,
-                move_type,  state , payment_state, journal_id,
+                move_type,  state ,  journal_id,
                 cr.rate as currency_rate,
                  sub.currency_id
         """
@@ -132,7 +120,7 @@ class SaleMarginReport(models.Model):
                     s.invoice_user_id as user_id,
 
                     s.company_id as company_id,
-                    s.move_type, s.state , s.payment_state , s.journal_id, s.currency_id
+                    s.move_type, s.state , s.journal_id, s.currency_id
         """
 
         # x = """
@@ -182,7 +170,6 @@ class SaleMarginReport(models.Model):
 
                     s.move_type,
                     s.state,
-                    s.payment_state,
                     s.journal_id,
                     s.currency_id
 
@@ -257,7 +244,7 @@ class SaleMarginReport(models.Model):
         )
 
     def write(self, vals):
-        invoice_line = self.env["account.invoice.line"].browse(self.id)
+        invoice_line = self.env["account.move.line"].sudo().browse(self.id)
         value = {"commission": vals.get("commission", False)}
         if invoice_line.purchase_price == 0 and invoice_line.product_id:
             if invoice_line.product_id.standard_price > 0:
@@ -266,7 +253,7 @@ class SaleMarginReport(models.Model):
         #    value['purchase_price'] = vals['purchase_price']
         invoice_line.write(value)
         if "user_id" in vals:
-            invoice = self.env["account.invoice"].browse(self.invoice_id)
+            invoice = self.env["account.move"].browse(self.invoice_id)
             invoice.write({"user_id": vals["user_id"]})
         super(SaleMarginReport, self).write(vals)
         return True

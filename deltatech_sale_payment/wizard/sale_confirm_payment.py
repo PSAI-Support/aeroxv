@@ -1,4 +1,4 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 #              Dorin Hongu <dhongu(@)gmail(.)com
 # See README.rst file on addons root folder for license details
 
@@ -27,7 +27,7 @@ class SaleConfirmPayment(models.TransientModel):
         order = self.env["sale.order"].browse(active_id)
         defaults["currency_id"] = order.currency_id.id
 
-        tx = order.sudo().transaction_ids.get_last_transaction()
+        tx = order.sudo().transaction_ids._get_last()
         if tx and tx.state in ["pending", "authorized"]:
             defaults["transaction_id"] = tx.id
             defaults["acquirer_id"] = tx.acquirer_id.id
@@ -54,16 +54,16 @@ class SaleConfirmPayment(models.TransientModel):
                     "partner_id": order.partner_id.id,
                     "sale_order_ids": [(4, order.id, False)],
                     "currency_id": self.currency_id.id,
-                    "date": self.payment_date,
+                    # "date": self.payment_date,
                     "state": "draft",
                 }
             )
 
         if transaction.state != "done":
             transaction = transaction.with_context(payment_date=self.payment_date)
-            transaction._set_transaction_pending()
-            transaction._set_transaction_done()
-            transaction._post_process_after_done()
+            transaction._set_pending()
+            transaction._set_done()
+            transaction._finalize_post_processing()
 
             # transaction._reconcile_after_transaction_done()
             # transaction.write({'is_processed':True})

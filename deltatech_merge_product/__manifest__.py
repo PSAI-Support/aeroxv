@@ -1,10 +1,10 @@
-# ©  2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 {
     "name": "Merge Products",
     "summary": "Merge products",
-    "version": "14.0.0.0.7",
+    "version": "15.0.0.0.7",
     "author": "Vauxoo, Terrabit, Dorin Hongu",
     "category": "Generic Modules",
     "website": "https://www.terrabit.ro",

@@ -1,4 +1,4 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 #              Dorin Hongu <dhongu(@)gmail(.)com
 # See README.rst file on addons root folder for license details
 
@@ -51,8 +51,7 @@ class SaleOrder(models.Model):
                 qty_to_deliver = 0
                 order.stage = "delivered"
                 for line in order.order_line:
-                    if line.product_id.type == "product":
-                        qty_to_deliver += line.qty_to_deliver
+                    qty_to_deliver += line.qty_to_deliver
                 if qty_to_deliver != 0:
                     order.stage = "to_be_delivery"
                 else:

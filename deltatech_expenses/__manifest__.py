@@ -1,11 +1,11 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 
 {
     "name": "Expenses Deduction",
     "summary": "Expenses Deduction & Disposition of Cashing",
-    "version": "14.0.1.0.2",
+    "version": "15.0.1.0.2",
     "category": "Accounting & Finance",
     "author": "Terrabit, Dorin Hongu",
     "website": "https://www.terrabit.ro",

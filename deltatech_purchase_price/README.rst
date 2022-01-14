@@ -14,7 +14,7 @@ Purchase Price
     :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
     :alt: License: LGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-dhongu%2Fdeltatech-lightgray.png?logo=github
-    :target: https://github.com/dhongu/deltatech/tree/14.0/deltatech_purchase_price
+    :target: https://github.com/dhongu/deltatech/tree/15.0/deltatech_purchase_price
     :alt: dhongu/deltatech
 
 |badge1| |badge2| |badge3| 
@@ -27,11 +27,6 @@ Features:
       product price will be allways overwritten
     - *purchase.add_supplier_to_product* - if set to True, the supplier and the price will be automatically added to the
       supplier info of the product, if set to False, no modifications will be made in the supplier info of the product
- - New fields added in product template:
-    - last_purchase_price - last purchase price. It's updated at receipt validation
-    - trade_markup - trade parkup for the product. It can be updated with a wizard (Action->Set trade markup)
- - New feature:
-    - if trade_markup **is set** for a product, at reception the sale price will be computed from last_purchase_price and trade_markup
 
 **Table of contents**
 
@@ -44,7 +39,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/dhongu/deltatech/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/dhongu/deltatech/issues/new?body=module:%20deltatech_purchase_price%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/dhongu/deltatech/issues/new?body=module:%20deltatech_purchase_price%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -68,6 +63,6 @@ Current maintainer:
 
 |maintainer-dhongu| 
 
-This module is part of the `dhongu/deltatech <https://github.com/dhongu/deltatech/tree/14.0/deltatech_purchase_price>`_ project on GitHub.
+This module is part of the `dhongu/deltatech <https://github.com/dhongu/deltatech/tree/15.0/deltatech_purchase_price>`_ project on GitHub.
 
 You are welcome to contribute.

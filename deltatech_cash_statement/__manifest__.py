@@ -1,11 +1,11 @@
-# ©  2008-2018 Deltatech
+# ©  2008-2021 Deltatech
 #              Dorin Hongu <dhongu(@)gmail(.)com
 # See README.rst file on addons root folder for license details
 
 {
     "name": "Deltatech Cash Statement Extension",
     "summary": "Update cash balance",
-    "version": "14.0.3.0.0",
+    "version": "15.0.3.0.0",
     "author": "Terrabit,Dorin Hongu",
     "license": "LGPL-3",
     "website": "https://www.terrabit.ro",

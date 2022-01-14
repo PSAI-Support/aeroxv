@@ -2,7 +2,6 @@ odoo.define("deltatech_website_stock_availability.VariantMixin", function (requi
     "use strict";
 
     var VariantMixin = require("sale.VariantMixin");
-    var publicWidget = require("web.public.widget");
     var ajax = require("web.ajax");
     var core = require("web.core");
     var QWeb = core.qweb;
@@ -11,7 +10,9 @@ odoo.define("deltatech_website_stock_availability.VariantMixin", function (requi
         QWeb
     );
 
-    VariantMixin._onChangeCombinationStock2 = function (ev, $parent, combination) {
+    const originalOnChangeCombination = VariantMixin._onChangeCombination;
+
+    VariantMixin._onChangeCombination = function (ev, $parent, combination) {
         var product_id = 0;
         // Needed for list view of variants
         if ($parent.find("input.product_id:checked").length) {
@@ -24,48 +25,22 @@ odoo.define("deltatech_website_stock_availability.VariantMixin", function (requi
             ($parent.is(".js_main_product") || $parent.is(".main_product")) &&
             combination.product_id === parseInt(product_id, 10);
 
-        if (!this.isWebsite || !isMainProduct) {
-            return;
-        }
+        if (this.isWebsite && isMainProduct) {
+            var qty = $parent.find('input[name="add_qty"]').val();
+            combination.selected_qty = qty;
+            if (combination.product_type === "product") {
+                xml_load.then(function () {
+                    $(".oe_website_sale")
+                        .find(".lead_time_messages_" + combination.product_template)
+                        .remove();
 
-        if (combination.product_type === "product" && combination.inventory_availability === "preorder") {
-            combination.virtual_available -= parseInt(combination.cart_qty, 10);
-            if (combination.virtual_available < 0) {
-                combination.virtual_available = 0;
+                    var $message = $(QWeb.render("deltatech_website_stock_availability.lead_time", combination));
+                    $("div.lead_time_messages").html($message);
+                });
             }
-            xml_load.then(function () {
-                $(".oe_website_sale")
-                    .find(".availability_message_" + combination.product_template)
-                    .remove();
-
-                var $message = $(QWeb.render("deltatech_website_stock_availability.product_availability", combination));
-                $("div.availability_messages").html($message);
-            });
         }
-        var qty = $parent.find('input[name="add_qty"]').val();
-        combination.selected_qty = qty;
-        if (combination.product_type === "product") {
-            xml_load.then(function () {
-                $(".oe_website_sale")
-                    .find(".lead_time_messages_" + combination.product_template)
-                    .remove();
-
-                var $message = $(QWeb.render("deltatech_website_stock_availability.lead_time", combination));
-                $("div.lead_time_messages").html($message);
-            });
-        }
+        originalOnChangeCombination.apply(this, [ev, $parent, combination]);
     };
-
-    publicWidget.registry.WebsiteSale.include({
-        /**
-         * Adds the stock checking to the regular _onChangeCombination method
-         * @override
-         */
-        _onChangeCombination: function () {
-            this._super.apply(this, arguments);
-            VariantMixin._onChangeCombinationStock2.apply(this, arguments);
-        },
-    });
 
     return VariantMixin;
 });

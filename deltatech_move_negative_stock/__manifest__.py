@@ -1,10 +1,10 @@
-# ©  2015-2019 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 {
     "name": "Replenish negative stock",
     "summary": "Replenish negative stock from other location",
-    "version": "14.0.1.0.0",
+    "version": "15.0.1.0.0",
     "author": "Terrabit, Dan Stoica",
     "website": "https://www.terrabit.ro",
     "category": "Generic Modules/Stock",

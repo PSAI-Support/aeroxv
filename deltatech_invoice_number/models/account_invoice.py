@@ -1,4 +1,4 @@
-# ©  2015-2019 Deltatech
+# ©  2008-2021 Deltatech
 #              Dorin Hongu <dhongu(@)gmail(.)com
 # See README.rst file on addons root folder for license details
 
@@ -79,10 +79,10 @@ class AccountInvoice(models.Model):
         for inv in self:
 
             if inv.move_type in ("in_invoice", "in_refund"):
-                if not inv.ref:
+                if not inv.reference:
                     ref = inv.name
                 else:
-                    ref = inv.ref
+                    ref = inv.reference
             else:
                 ref = inv.name
 

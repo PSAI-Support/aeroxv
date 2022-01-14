@@ -1,9 +1,9 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 {
     "name": "Invoice Followup",
     "summary": "Simple invoice followup, with automatic e-mails",
-    "version": "14.0.0.0.2",
+    "version": "15.0.0.0.2",
     "author": "Terrabit, Dan Stoica",
     "website": "https://www.terrabit.ro",
     "support": "odoo@terrabit.ro",

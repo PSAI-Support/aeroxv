@@ -1,4 +1,4 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 
@@ -52,8 +52,6 @@ class SaleOrderLine(models.Model):
 
     @api.constrains("price_reduce_taxexcl", "purchase_price")
     def _check_sale_price(self):
-        if self.env.context.get("ignore_price_check", False):
-            return True
         get_param = self.env["ir.config_parameter"].sudo().get_param
         margin_limit = safe_eval(get_param("sale.margin_limit", "0"))
 

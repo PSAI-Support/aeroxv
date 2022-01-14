@@ -20,8 +20,6 @@ class ServiceEquiOperation(models.TransientModel):
         default="ins",
         readonly=True,
     )
-    period_id = fields.Many2one("date.range", string="Period")
-
     equipment_id = fields.Many2one("service.equipment", string="Equipment", readonly=True)
 
     partner_id = fields.Many2one("res.partner", string="Customer", domain=[("is_company", "=", True)])
@@ -98,24 +96,7 @@ class ServiceEquiOperation(models.TransientModel):
                 }
             )
 
-        for item in self.items:
-            self.env["service.meter.reading"].create(
-                {
-                    "meter_id": item.meter_id.id,
-                    "equipment_id": item.meter_id.equipment_id.id,
-                    "date": self.date,
-                    "read_by": self.read_by.id,
-                    "note": self.note,
-                    "counter_value": item.counter_value,
-                }
-            )
-
         if self.state == "rem":
-            domain = [("equipment_id", "=", self.equipment_id.id)]
-            agreement_lines = self.env["service.agreement.line"].search(domain)
-            agreement_lines.with_context(from_uninstall=True).do_billing_preparation(self.period_id)
-            self._compute_can_remove()
-
             if not self.can_remove:
                 raise UserError(_("You must bill consumption before uninstalling"))
             emplacement = self.equipment_id.emplacement or ""
@@ -133,12 +114,21 @@ class ServiceEquiOperation(models.TransientModel):
                     "partner_id": False,
                     "address_id": False,
                     "emplacement": False,
-                    "agreement_id": False,
                     "state": "available",
                 }
             )
 
-            agreement_lines.write({"active": False})
+        for item in self.items:
+            self.env["service.meter.reading"].create(
+                {
+                    "meter_id": item.meter_id.id,
+                    "equipment_id": item.meter_id.equipment_id.id,
+                    "date": self.date,
+                    "read_by": self.read_by.id,
+                    "note": self.note,
+                    "counter_value": item.counter_value,
+                }
+            )
 
         action = True
         if self.state == "add":
@@ -191,8 +181,6 @@ class ServiceEquiOperation(models.TransientModel):
                     values["uom_id"] = template.meter_categ_id.bill_uom_id.id
 
             self.env["service.agreement.line"].create(values)
-
-        self.equipment_id.write({"agreement_id": self.agreement_id})
 
         action = {
             "domain": "[('id','=',%s)]" % self.agreement_id.id,

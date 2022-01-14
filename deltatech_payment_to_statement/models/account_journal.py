@@ -1,4 +1,4 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 
@@ -12,7 +12,7 @@ class AccountJournal(models.Model):
     statement_sequence_id = fields.Many2one("ir.sequence", string="Statement Sequence", copy=False)
     auto_statement = fields.Boolean("Auto Statement")
 
-    journal_sequence_id = fields.Many2one("ir.sequence", string="Journal Sequence", copy=False)
+    journal_sequence_id = fields.Many2one("ir.sequence", string="Sequence", copy=False)
     cash_in_sequence_id = fields.Many2one("ir.sequence", string="Sequence for cash in")
     cash_out_sequence_id = fields.Many2one("ir.sequence", string="Sequence for cash out")
 

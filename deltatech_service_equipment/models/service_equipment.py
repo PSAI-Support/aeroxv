@@ -107,11 +107,9 @@ class ServiceEquipment(models.Model):
     product_id = fields.Many2one(
         "product.product", string="Product", ondelete="restrict", domain=[("type", "=", "product")]
     )
-    serial_id = fields.Many2one("stock.production.lot", string="Serial Number", ondelete="restrict", copy=False)
+    serial_id = fields.Many2one("stock.production.lot", string="Serial", ondelete="restrict", copy=False)
     # quant_id = fields.Many2one('stock.quant', string='Quant', copy=False)  #  ondelete="restrict",
-    location_id = fields.Many2one(
-        "stock.location", "Stock Location", store=True, compute="_compute_location"
-    )  # related='quant_id.location_id'
+    location_id = fields.Many2one("stock.location", "Stock Location", store=True)  # related='quant_id.location_id'
 
     ean_code = fields.Char(string="EAN Code")
 
@@ -161,18 +159,6 @@ class ServiceEquipment(models.Model):
             if sequence:
                 vals["name"] = sequence.next_by_id()
         return super(ServiceEquipment, self).write(vals)
-
-    @api.depends("serial_id.quant_ids")
-    def _compute_location(self):
-        for equipment in self:
-            if not equipment.serial_id:  # multiple quants, can be in different locations
-                equipment.location_id = False
-            else:
-                quants = equipment.serial_id.quant_ids.filtered(lambda x: x.quantity > 0)
-                if len(quants) == 1:
-                    equipment.location_id = quants.location_id
-                else:
-                    equipment.location_id = False
 
     def compute_totals(self):
         for equipment in self:
@@ -316,33 +302,13 @@ class ServiceEquipment(models.Model):
             "type": "ir.actions.act_window",
         }
 
-    @api.model
-    def name_search(self, name="", args=None, operator="ilike", limit=100):
-        res_serial = []
-        if name and len(name) > 3:
-            equipment_ids = self.search(["|", ("serial_id", "ilike", name), ("ean_code", "ilike", name)], limit=10)
-            if equipment_ids:
-                res_serial = equipment_ids.name_get()
-        res = super(ServiceEquipment, self).name_search(name, args, operator=operator, limit=limit) + res_serial
-        return res
-
-    def name_get(self):
-        res = []
-        for equipment in self:
-            name = equipment.name
-            if equipment.address_id:
-                name += "/" + equipment.address_id.name
-            if equipment.serial_id:
-                name += "/" + equipment.serial_id.name
-            res.append((equipment.id, name))
-        return res
-
 
 # se va utiliza maintenance.equipment.category
-class ServiceEquipmentCategory(models.Model):
-    _inherit = "maintenance.equipment.category"
-
-    template_meter_ids = fields.One2many("service.template.meter", "categ_id")
+# class service_equipment_category(models.Model):
+#     _name = 'service.equipment.category'
+#     _description = "Service Equipment Category"
+#
+#     name = fields.Char(string='Category', translate=True)
 
 
 class ServiceEquipmentType(models.Model):
@@ -352,12 +318,7 @@ class ServiceEquipmentType(models.Model):
 
     categ_id = fields.Many2one("maintenance.equipment.category", string="Category")
 
-    template_meter_ids = fields.One2many("service.template.meter", related="categ_id.template_meter_ids")
-
-    @api.depends("categ_id")
-    def _compute_template_meter_ids(self):
-        for equipment_type in self:
-            equipment_type.template_meter_ids = equipment_type.categ_id.template_meter_ids
+    template_meter_ids = fields.One2many("service.template.meter", "type_id")
 
 
 # este utilizat pentru generare de pozitii noi in contract si pentru adugare contori noi
@@ -365,7 +326,6 @@ class ServiceTemplateMeter(models.Model):
     _name = "service.template.meter"
     _description = "Service Template Meter"
 
-    categ_id = fields.Many2one("maintenance.equipment.category", string="Category")
     type_id = fields.Many2one("service.equipment.type", string="Type")
     product_id = fields.Many2one(
         "product.product", string="Service", ondelete="set null", domain=[("type", "=", "service")]

@@ -1,11 +1,11 @@
-# ©  2015-2020 Deltatech
+# ©  2008-2021 Deltatech
 #              Dorin Hongu <dhongu(@)gmail(.)com
 # See README.rst file on addons root folder for license details
 {
     "name": "eCommerce Product sort",
     "category": "Website",
     "summary": "Additional sorting criteria ",
-    "version": "14.0.1.0.1",
+    "version": "15.0.1.0.1",
     "license": "LGPL-3",
     "author": "Terrabit, Dorin Hongu",
     "website": "https://www.terrabit.ro",

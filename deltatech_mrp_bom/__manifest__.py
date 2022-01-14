@@ -1,10 +1,10 @@
-# ©  2015-2018 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 {
     "name": "MRP Bom",
     "summary": "MRP Bom",
-    "version": "14.0.1.0.2",
+    "version": "15.0.1.0.2",
     "author": "Terrabit, Dorin Hongu",
     "license": "LGPL-3",
     "website": "https://www.terrabit.ro",

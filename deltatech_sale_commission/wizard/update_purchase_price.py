@@ -1,4 +1,4 @@
-# ©  2015-2019 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 
@@ -42,7 +42,7 @@ class CommissionUpdatePurchasePrice(models.TransientModel):
             lines = self.invoice_line_ids
 
         for line in lines:
-            invoice_line = self.env["account.move.line"].browse(line.id)
+            invoice_line = self.env["account.move.line"].sudo().browse(line.id)
             purchase_price = 0.0
             pickings = self.env["stock.picking"]
             if self.price_from_doc:

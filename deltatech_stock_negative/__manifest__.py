@@ -1,10 +1,10 @@
-# ©  2015-2019 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 
 {
     "name": "No Negative Stock",
     "summary": "Negative stocks are not allowed",
-    "version": "14.0.1.0.1",
+    "version": "15.0.1.0.1",
     "author": "Terrabit, Dorin Hongu",
     "website": "https://www.terrabit.ro",
     "category": "Generic Modules/Stock",

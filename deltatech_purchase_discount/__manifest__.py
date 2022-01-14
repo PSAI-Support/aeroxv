@@ -1,9 +1,9 @@
-# ©  2015-2019 Deltatech
+# ©  2008-2021 Deltatech
 # See README.rst file on addons root folder for license details
 {
     "name": "Deltatch Discount in purchase order line",
     "summary": "Discount in purchase order line",
-    "version": "14.0.1.0.2",
+    "version": "15.0.1.0.1",
     "author": "Terrabit, Dan Stoica",
     "website": "https://www.terrabit.ro",
     "support": "odoo@terrabit.ro",
